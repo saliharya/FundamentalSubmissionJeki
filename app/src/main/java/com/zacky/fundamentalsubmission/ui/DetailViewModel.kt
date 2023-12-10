@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import com.zacky.fundamentalsubmission.data.remote.database.FavoriteUser
 import com.zacky.fundamentalsubmission.data.remote.repository.FavoriteRepository
 
-class DetailViewModel(application: Application, username: String) : AndroidViewModel(application) {
+class DetailViewModel(application: Application) : AndroidViewModel(application) {
     private val mFavoriteUserRepository: FavoriteRepository = FavoriteRepository(getApplication())
     val favoriteUserIsExist: LiveData<Boolean> =
         mFavoriteUserRepository.getFavoriteUserByUsername(username = "")

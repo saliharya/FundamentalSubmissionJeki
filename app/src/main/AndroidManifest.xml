@@ -15,19 +15,10 @@
         android:theme="@style/Theme.FundamentalSubmission"
         tools:targetApi="31">
         <activity
-            android:name=".ui.insert.NoteAddUpdateActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.favorite.FavoriteUserActivity"
             android:exported="false" />
         <activity
             android:name=".ui.DarkMode"
-            android:exported="false" />
-        <activity
-            android:name=".ui.FavoriteUserActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.MenuActivity"
             android:exported="false" />
         <activity
             android:name=".ui.DetailActivity"

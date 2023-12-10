@@ -98,7 +98,7 @@ class FollowFragment : Fragment() {
         })
     }
 
-    fun getFollowing(USERNAME: String) {
+    private fun getFollowing(USERNAME: String) {
         showLoading(true)
         val client = ApiConfig.getApiService().getFollowing(USERNAME)
         client.enqueue(object : Callback<List<ItemsItem>> {

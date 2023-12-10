@@ -19,7 +19,7 @@ class FavoriteUserActivity : AppCompatActivity() {
         binding = ActivityFavoriteUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this).get(FavoriteViewModel::class.java)
+        viewModel = ViewModelProvider(this)[FavoriteViewModel::class.java]
         adapter = FavoriteAdapter(this)
 
         binding.rvFavoriteUser.layoutManager = LinearLayoutManager(this)

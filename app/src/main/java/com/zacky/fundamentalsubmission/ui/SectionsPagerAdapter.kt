@@ -8,7 +8,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class SectionsPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
     var username: String = ""
-    var follower = 0
     var following = 0
 
     override fun createFragment(position: Int): Fragment {

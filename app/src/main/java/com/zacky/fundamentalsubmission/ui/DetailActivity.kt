@@ -74,7 +74,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
 
-    fun findDetailUser(USERNAME: String) {
+    private fun findDetailUser(USERNAME: String) {
         showLoading(true)
         val client = ApiConfig.getApiService().getDetailUser(USERNAME)
         client.enqueue(object : Callback<DetailUserResponse> {
@@ -102,7 +102,7 @@ class DetailActivity : AppCompatActivity() {
             intent.getParcelableExtra<FavoriteUser?>(FavoriteUserActivity.EXTRA_FAVORITE)
         val githubUser = intent.getParcelableExtra<ItemsItem?>(MainActivity.EXTRA_DATA)
         val username: String =
-            if (githubUser != null) githubUser.login else favoriteUser?.username.toString()
+            githubUser?.login ?: favoriteUser?.username.toString()
 
 
         val viewModelFactory = FavoriteModelFactory(this@DetailActivity.application, username)
@@ -144,8 +144,8 @@ class DetailActivity : AppCompatActivity() {
 
 
     companion object {
-        val LOGIN_NAME = "dataUser"
-        val TAG = "DetailActivity"
+        const val LOGIN_NAME = "dataUser"
+        const val TAG = "DetailActivity"
 
         @StringRes
         private val TAB_TITLES = intArrayOf(
