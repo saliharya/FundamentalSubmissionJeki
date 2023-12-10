@@ -15,13 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.zacky.fundamentalsubmission.R
-import com.zacky.fundamentalsubmission.model.ItemsItem
 import com.zacky.fundamentalsubmission.databinding.ActivityMainBinding
+import com.zacky.fundamentalsubmission.model.ItemsItem
 import com.zacky.fundamentalsubmission.ui.SettingPreferences
 import com.zacky.fundamentalsubmission.ui.adapter.UserAdapter
-import com.zacky.fundamentalsubmission.ui.viewmodel.ViewModelFactory
 import com.zacky.fundamentalsubmission.ui.dataStore
 import com.zacky.fundamentalsubmission.ui.viewmodel.MainViewModel
+import com.zacky.fundamentalsubmission.ui.viewmodel.ViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.favorite -> {
-                    val intent = Intent(this, FavoriteUserActivity::class.java)
+                    val intent = Intent(this, FavoriteActivity::class.java)
                     startActivity(intent)
                     true
                 }
