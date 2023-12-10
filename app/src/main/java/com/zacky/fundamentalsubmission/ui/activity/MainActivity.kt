@@ -1,4 +1,4 @@
-package com.zacky.fundamentalsubmission.ui.main
+package com.zacky.fundamentalsubmission.ui.activity
 
 import android.app.SearchManager
 import android.content.Intent
@@ -15,13 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.zacky.fundamentalsubmission.R
-import com.zacky.fundamentalsubmission.data.remote.response.ItemsItem
+import com.zacky.fundamentalsubmission.model.ItemsItem
 import com.zacky.fundamentalsubmission.databinding.ActivityMainBinding
 import com.zacky.fundamentalsubmission.ui.SettingPreferences
-import com.zacky.fundamentalsubmission.ui.UserAdapter
-import com.zacky.fundamentalsubmission.ui.ViewModelFactory
+import com.zacky.fundamentalsubmission.ui.adapter.UserAdapter
+import com.zacky.fundamentalsubmission.ui.viewmodel.ViewModelFactory
 import com.zacky.fundamentalsubmission.ui.dataStore
-import com.zacky.fundamentalsubmission.ui.favorite.FavoriteUserActivity
+import com.zacky.fundamentalsubmission.ui.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -125,19 +125,6 @@ class MainActivity : AppCompatActivity() {
         switchTheme.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             mainViewModel.saveThemeSetting(isChecked)
         }
-
-//        with(binding) {
-//            searchView.setupWithSearchBar(searchBar)
-//            searchView
-//                .editText
-//                .setOnEditorActionListener { textView, actionId, event ->
-//                    searchBar.text = searchView.text
-//                    searchView.hide()
-//                    val search = searchView.text.toString()
-//                    mainViewModel.findGithubUser(search)
-//                    false
-//                }
-//        }
     }
 
     private fun setUserData(dataUser: List<ItemsItem>) {

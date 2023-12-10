@@ -9,9 +9,11 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zacky.fundamentalsubmission.R
-import com.zacky.fundamentalsubmission.data.remote.response.ItemsItem
-import com.zacky.fundamentalsubmission.data.remote.retrofit.ApiConfig
+import com.zacky.fundamentalsubmission.model.ItemsItem
+import com.zacky.fundamentalsubmission.remote.retrofit.ApiConfig
 import com.zacky.fundamentalsubmission.databinding.FragmentFollBinding
+import com.zacky.fundamentalsubmission.ui.activity.DetailActivity
+import com.zacky.fundamentalsubmission.ui.adapter.UserAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

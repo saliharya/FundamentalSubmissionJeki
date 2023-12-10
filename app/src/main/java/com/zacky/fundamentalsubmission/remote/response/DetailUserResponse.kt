@@ -1,4 +1,4 @@
-package com.zacky.fundamentalsubmission.data.remote.response
+package com.zacky.fundamentalsubmission.remote.response
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,9 +1,10 @@
-package com.zacky.fundamentalsubmission.data.remote.database
+package com.zacky.fundamentalsubmission.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.zacky.fundamentalsubmission.model.FavoriteUser
 
 @Database(entities = [FavoriteUser::class], version = 1)
 abstract class FavoriteUserRoomDb : RoomDatabase() {

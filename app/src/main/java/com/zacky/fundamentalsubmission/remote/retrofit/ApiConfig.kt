@@ -1,4 +1,4 @@
-package com.zacky.fundamentalsubmission.data.remote.retrofit
+package com.zacky.fundamentalsubmission.remote.retrofit
 
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

@@ -1,4 +1,4 @@
-package com.zacky.fundamentalsubmission.data.remote.database
+package com.zacky.fundamentalsubmission.model
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

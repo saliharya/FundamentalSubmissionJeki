@@ -1,9 +1,10 @@
-package com.zacky.fundamentalsubmission.ui
+package com.zacky.fundamentalsubmission.ui.adapter
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.zacky.fundamentalsubmission.ui.FollowFragment
 
 
 class SectionsPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {

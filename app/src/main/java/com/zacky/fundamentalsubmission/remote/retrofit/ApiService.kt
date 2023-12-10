@@ -1,8 +1,8 @@
-package com.zacky.fundamentalsubmission.data.remote.retrofit
+package com.zacky.fundamentalsubmission.remote.retrofit
 
-import com.zacky.fundamentalsubmission.data.remote.response.DetailUserResponse
-import com.zacky.fundamentalsubmission.data.remote.response.GithubResponse
-import com.zacky.fundamentalsubmission.data.remote.response.ItemsItem
+import com.zacky.fundamentalsubmission.remote.response.DetailUserResponse
+import com.zacky.fundamentalsubmission.remote.response.GithubResponse
+import com.zacky.fundamentalsubmission.model.ItemsItem
 import retrofit2.Call
 import retrofit2.http.*
 

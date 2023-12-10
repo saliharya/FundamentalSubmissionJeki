@@ -1,7 +1,8 @@
-package com.zacky.fundamentalsubmission.data.remote.database
+package com.zacky.fundamentalsubmission.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.zacky.fundamentalsubmission.model.FavoriteUser
 
 @Dao
 interface FavoriteUserDao {
@@ -12,7 +13,7 @@ interface FavoriteUserDao {
     fun delete(favoriteUser: FavoriteUser)
 
     @Query("SELECT * FROM favoriteuser ORDER BY id ASC")
-    fun getAllFavoriteUsers(): LiveData<List<FavoriteUser>>
+    fun getAllFavoriteUsers(): List<FavoriteUser>
 
 
     @Query("SELECT EXISTS(SELECT * FROM favoriteuser WHERE username = :username)")

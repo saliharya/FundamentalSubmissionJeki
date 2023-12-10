@@ -1,15 +1,19 @@
-package com.zacky.fundamentalsubmission.ui.main
+package com.zacky.fundamentalsubmission.ui.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.*
-import com.zacky.fundamentalsubmission.data.remote.response.GithubResponse
-import com.zacky.fundamentalsubmission.data.remote.response.ItemsItem
-import com.zacky.fundamentalsubmission.data.remote.retrofit.ApiConfig
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.zacky.fundamentalsubmission.model.ItemsItem
+import com.zacky.fundamentalsubmission.remote.response.GithubResponse
+import com.zacky.fundamentalsubmission.remote.retrofit.ApiConfig
 import com.zacky.fundamentalsubmission.ui.SettingPreferences
 import com.zacky.fundamentalsubmission.util.Event
 import kotlinx.coroutines.launch
-import retrofit2.Callback
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 class MainViewModel(private val pref: SettingPreferences) : ViewModel() {
@@ -23,22 +27,21 @@ class MainViewModel(private val pref: SettingPreferences) : ViewModel() {
     private val _snackbarText = MutableLiveData<Event<String>>()
     val snackbarText: LiveData<Event<String>> = _snackbarText
 
-    companion object{
+    companion object {
         private const val TAG = "MainViewModel"
         private const val LOGIN = "zacky"
     }
 
-    init{
+    init {
         findGithubUser(LOGIN)
     }
 
-    fun findGithubUser(LOGIN : String) {
+    fun findGithubUser(LOGIN: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getGithubUser(LOGIN)
         client.enqueue(object : Callback<GithubResponse> {
             override fun onResponse(
-                call: Call<GithubResponse>,
-                response: Response<GithubResponse>
+                call: Call<GithubResponse>, response: Response<GithubResponse>
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
@@ -64,7 +67,6 @@ class MainViewModel(private val pref: SettingPreferences) : ViewModel() {
             pref.saveThemeSetting(isDarkModeActive)
         }
     }
-
 
 
 }

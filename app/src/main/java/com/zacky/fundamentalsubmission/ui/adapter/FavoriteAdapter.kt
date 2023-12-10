@@ -1,4 +1,4 @@
-package com.zacky.fundamentalsubmission.ui.favorite
+package com.zacky.fundamentalsubmission.ui.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.zacky.fundamentalsubmission.data.remote.database.FavoriteUser
+import com.zacky.fundamentalsubmission.model.FavoriteUser
 import com.zacky.fundamentalsubmission.databinding.ItemUserBinding
-import com.zacky.fundamentalsubmission.ui.DetailActivity
+import com.zacky.fundamentalsubmission.ui.activity.DetailActivity
 
 class FavoriteAdapter(private val context: Context) :
     ListAdapter<FavoriteUser, FavoriteAdapter.MyViewHolder>(DIFF_CALLBACK) {

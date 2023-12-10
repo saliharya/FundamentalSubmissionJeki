@@ -1,4 +1,4 @@
-package com.zacky.fundamentalsubmission.ui
+package com.zacky.fundamentalsubmission.ui.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.zacky.fundamentalsubmission.data.remote.response.ItemsItem
+import com.zacky.fundamentalsubmission.model.ItemsItem
 import com.zacky.fundamentalsubmission.databinding.ItemUserBinding
+import com.zacky.fundamentalsubmission.ui.activity.DetailActivity
 
 class UserAdapter : ListAdapter<ItemsItem, UserAdapter.MyViewHolder>(DIFF_CALLBACK) {
 

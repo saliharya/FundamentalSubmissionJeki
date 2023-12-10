@@ -15,16 +15,16 @@
         android:theme="@style/Theme.FundamentalSubmission"
         tools:targetApi="31">
         <activity
-            android:name=".ui.favorite.FavoriteUserActivity"
+            android:name=".ui.activity.FavoriteUserActivity"
             android:exported="false" />
         <activity
             android:name=".ui.DarkMode"
             android:exported="false" />
         <activity
-            android:name=".ui.DetailActivity"
+            android:name=".ui.activity.DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
