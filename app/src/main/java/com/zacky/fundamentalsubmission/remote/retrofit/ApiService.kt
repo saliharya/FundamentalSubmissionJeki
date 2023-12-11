@@ -1,6 +1,5 @@
 package com.zacky.fundamentalsubmission.remote.retrofit
 
-import com.zacky.fundamentalsubmission.remote.response.DetailUserResponse
 import com.zacky.fundamentalsubmission.remote.response.GithubResponse
 import com.zacky.fundamentalsubmission.model.GithubUser
 import retrofit2.Call
@@ -14,7 +13,7 @@ interface ApiService {
     ): Call<GithubResponse>
 
     @GET("users/{username}")
-    fun getDetailUser(@Path("username") username: String): Call<DetailUserResponse>
+    fun getDetailUser(@Path("username") username: String): Call<GithubUser>
 
     @GET("users/{username}/followers")
     fun getFollowers(@Path("username") username: String): Call<List<GithubUser>>

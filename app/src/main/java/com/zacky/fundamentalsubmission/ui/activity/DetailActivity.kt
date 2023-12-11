@@ -16,7 +16,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.zacky.fundamentalsubmission.R
 import com.zacky.fundamentalsubmission.databinding.ActivityDetailBinding
 import com.zacky.fundamentalsubmission.local.FavoriteUserRoomDatabase
-import com.zacky.fundamentalsubmission.remote.response.DetailUserResponse
+import com.zacky.fundamentalsubmission.model.GithubUser
 import com.zacky.fundamentalsubmission.remote.retrofit.ApiConfig
 import com.zacky.fundamentalsubmission.repository.FavoriteRepository
 import com.zacky.fundamentalsubmission.ui.adapter.SectionsPagerAdapter
@@ -96,9 +96,9 @@ class DetailActivity : AppCompatActivity() {
         showLoading(true)
 
         val client = ApiConfig.getApiService().getDetailUser(username)
-        client.enqueue(object : Callback<DetailUserResponse> {
+        client.enqueue(object : Callback<GithubUser> {
             override fun onResponse(
-                call: Call<DetailUserResponse>, response: Response<DetailUserResponse>
+                call: Call<GithubUser>, response: Response<GithubUser>
             ) {
                 showLoading(false)
                 if (response.isSuccessful) {
@@ -108,14 +108,14 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<DetailUserResponse>, t: Throwable) {
+            override fun onFailure(call: Call<GithubUser>, t: Throwable) {
                 showLoading(false)
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
         })
     }
 
-    private fun setUserData(response: DetailUserResponse) {
+    private fun setUserData(response: GithubUser) {
         binding.apply {
             detailUserName.text = response.name
             Glide.with(this@DetailActivity).load(response.avatarUrl).circleCrop()
