@@ -1,16 +1,16 @@
 package com.zacky.fundamentalsubmission.local
 
 import androidx.room.*
-import com.zacky.fundamentalsubmission.model.FavoriteUser
+import com.zacky.fundamentalsubmission.model.GithubUser
 
 @Dao
 interface FavoriteUserDao {
-    @Query("SELECT * FROM FavoriteUser")
-    suspend fun getFavoriteUsers(): List<FavoriteUser>
+    @Query("SELECT * FROM GithubUser")
+    fun getFavoriteUsers(): List<GithubUser>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFavoriteUser(user: FavoriteUser)
+    suspend fun insertFavoriteUser(user: GithubUser)
 
     @Delete
-    suspend fun deleteFavoriteUser(user: FavoriteUser)
+    suspend fun deleteFavoriteUser(user: GithubUser)
 }

@@ -1,4 +1,4 @@
-package com.zacky.fundamentalsubmission.ui
+package com.zacky.fundamentalsubmission.ui.other
 
 import android.os.Bundle
 import android.util.Log
@@ -75,9 +75,9 @@ class FollowFragment : Fragment() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun getFollower(USERNAME: String) {
+    private fun getFollower(username: String) {
         showLoading(true)
-        val client = ApiConfig.getApiService().getFollowers(USERNAME)
+        val client = ApiConfig.getApiService().getFollowers(username)
         client.enqueue(object : Callback<List<GithubUser>> {
             override fun onResponse(
                 call: Call<List<GithubUser>>, response: Response<List<GithubUser>>
@@ -100,9 +100,9 @@ class FollowFragment : Fragment() {
         })
     }
 
-    private fun getFollowing(USERNAME: String) {
+    private fun getFollowing(username: String) {
         showLoading(true)
-        val client = ApiConfig.getApiService().getFollowing(USERNAME)
+        val client = ApiConfig.getApiService().getFollowing(username)
         client.enqueue(object : Callback<List<GithubUser>> {
             override fun onResponse(
                 call: Call<List<GithubUser>>, response: Response<List<GithubUser>>

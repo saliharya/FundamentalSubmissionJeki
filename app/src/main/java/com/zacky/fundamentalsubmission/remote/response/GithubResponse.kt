@@ -1,7 +1,6 @@
 package com.zacky.fundamentalsubmission.remote.response
 
 import com.google.gson.annotations.SerializedName
-import com.zacky.fundamentalsubmission.model.FavoriteUser
 import com.zacky.fundamentalsubmission.model.GithubUser
 
 data class GithubResponse(

@@ -1,17 +1,17 @@
 package com.zacky.fundamentalsubmission.repository
 
 import com.zacky.fundamentalsubmission.local.FavoriteUserDao
-import com.zacky.fundamentalsubmission.model.FavoriteUser
+import com.zacky.fundamentalsubmission.model.GithubUser
 
 class FavoriteRepository(private val mFavoriteUserDao: FavoriteUserDao) {
 
-    suspend fun getFavoriteUsers(): List<FavoriteUser> = mFavoriteUserDao.getFavoriteUsers()
+    suspend fun getFavoriteUsers(): List<GithubUser> = mFavoriteUserDao.getFavoriteUsers()
 
-    suspend fun insert(githubUser: FavoriteUser) {
+    suspend fun insert(githubUser: GithubUser) {
         mFavoriteUserDao.insertFavoriteUser(githubUser)
     }
 
-    suspend fun delete(githubUser: FavoriteUser) {
+    suspend fun delete(githubUser: GithubUser) {
         mFavoriteUserDao.deleteFavoriteUser(githubUser)
     }
 

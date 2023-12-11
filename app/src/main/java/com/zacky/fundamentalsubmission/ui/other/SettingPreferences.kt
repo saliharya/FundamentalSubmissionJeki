@@ -1,4 +1,4 @@
-package com.zacky.fundamentalsubmission.ui
+package com.zacky.fundamentalsubmission.ui.other
 
 import android.content.Context
 import androidx.datastore.core.DataStore

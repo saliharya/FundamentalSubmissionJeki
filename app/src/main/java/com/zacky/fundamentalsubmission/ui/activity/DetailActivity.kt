@@ -42,6 +42,10 @@ class DetailActivity : AppCompatActivity() {
         if (username != null) {
             fetchUserDetails(username)
         }
+
+        binding.btnFavorite.setOnClickListener {
+            viewModel.toggleFavoriteUser()
+        }
     }
 
     private fun setupViews() {

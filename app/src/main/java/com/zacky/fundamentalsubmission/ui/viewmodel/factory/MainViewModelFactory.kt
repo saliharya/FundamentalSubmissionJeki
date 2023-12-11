@@ -2,7 +2,7 @@ package com.zacky.fundamentalsubmission.ui.viewmodel.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.zacky.fundamentalsubmission.ui.SettingPreferences
+import com.zacky.fundamentalsubmission.ui.other.SettingPreferences
 import com.zacky.fundamentalsubmission.ui.viewmodel.MainViewModel
 
 class MainViewModelFactory(private val pref: SettingPreferences) : ViewModelProvider.NewInstanceFactory() {

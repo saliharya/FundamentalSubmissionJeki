@@ -15,13 +15,7 @@
         android:theme="@style/Theme.FundamentalSubmission"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activity.FavoriteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.FavoriteUserActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.DarkMode"
+            android:name=".ui.other.DarkMode"
             android:exported="false" />
         <activity
             android:name=".ui.activity.DetailActivity"

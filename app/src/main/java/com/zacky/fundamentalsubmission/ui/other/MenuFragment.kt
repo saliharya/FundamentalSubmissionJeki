@@ -1,4 +1,4 @@
-package com.zacky.fundamentalsubmission.ui
+package com.zacky.fundamentalsubmission.ui.other
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.zacky.fundamentalsubmission.model.GithubUser
 import com.zacky.fundamentalsubmission.remote.response.GithubResponse
 import com.zacky.fundamentalsubmission.remote.retrofit.ApiConfig
-import com.zacky.fundamentalsubmission.ui.SettingPreferences
+import com.zacky.fundamentalsubmission.ui.other.SettingPreferences
 import com.zacky.fundamentalsubmission.util.Event
 import kotlinx.coroutines.launch
 import retrofit2.Call
