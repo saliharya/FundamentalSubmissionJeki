@@ -19,13 +19,13 @@ import retrofit2.Response
 class MainViewModel(private val pref: SettingPreferences) : ViewModel() {
 
     private val _userProfile = MutableLiveData<List<GithubUser>>()
-    val userProfile: LiveData<List<GithubUser>> = _userProfile
+    val userProfile: LiveData<List<GithubUser>> get() = _userProfile
 
     private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
+    val isLoading: LiveData<Boolean> get() = _isLoading
 
     private val _snackbarText = MutableLiveData<Event<String>>()
-    val snackbarText: LiveData<Event<String>> = _snackbarText
+    val snackbarText: LiveData<Event<String>> get() = _snackbarText
 
     companion object {
         private const val TAG = "MainViewModel"
@@ -48,27 +48,23 @@ class MainViewModel(private val pref: SettingPreferences) : ViewModel() {
                     _userProfile.value = response.body()?.items
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
+                    _snackbarText.value = Event("Error: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<GithubResponse>, t: Throwable) {
                 _isLoading.value = false
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
+                _snackbarText.value = Event("Failure: ${t.message}")
             }
         })
     }
 
-    fun getThemeSettings(): LiveData<Boolean> {
-        return pref.getThemeSetting().asLiveData()
-    }
+    fun getThemeSettings(): LiveData<Boolean> = pref.getThemeSetting().asLiveData()
 
     fun saveThemeSetting(isDarkModeActive: Boolean) {
         viewModelScope.launch {
             pref.saveThemeSetting(isDarkModeActive)
         }
     }
-
-
 }
-
-

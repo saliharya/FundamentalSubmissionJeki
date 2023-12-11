@@ -8,39 +8,37 @@ import com.zacky.fundamentalsubmission.model.FavoriteUser
 import com.zacky.fundamentalsubmission.repository.FavoriteRepository
 import kotlinx.coroutines.launch
 
-class DetailViewModel(
-    private val mFavoriteUserRepository: FavoriteRepository,
-) : ViewModel() {
-    private val _responseLiveData: MutableLiveData<FavoriteUser> = MutableLiveData()
-    val responseLiveData: LiveData<FavoriteUser> = _responseLiveData
+class DetailViewModel(private val favoriteUserRepository: FavoriteRepository) : ViewModel() {
+    private val _responseLiveData = MutableLiveData<FavoriteUser>()
+    val responseLiveData: LiveData<FavoriteUser> get() = _responseLiveData
 
-    private val _favoriteUsersLiveData: MutableLiveData<List<FavoriteUser>> = MutableLiveData()
-    var favoriteUsersLiveData: LiveData<List<FavoriteUser>> = _favoriteUsersLiveData
+    private val _favoriteUsersLiveData = MutableLiveData<List<FavoriteUser>>()
+    val favoriteUsersLiveData: LiveData<List<FavoriteUser>> get() = _favoriteUsersLiveData
 
-    private val _errorLiveData: MutableLiveData<Throwable> = MutableLiveData()
-    val errorLiveData: LiveData<Throwable> = _errorLiveData
+    private val _errorLiveData = MutableLiveData<Throwable>()
+    val errorLiveData: LiveData<Throwable> get() = _errorLiveData
 
-    private val _isLoadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val isLoadingLiveData: LiveData<Boolean> = _isLoadingLiveData
+    private val _isLoadingLiveData = MutableLiveData<Boolean>()
+    val isLoadingLiveData: LiveData<Boolean> get() = _isLoadingLiveData
 
     fun setUser(user: FavoriteUser) {
-        _responseLiveData.postValue(user)
+        _responseLiveData.value = user
     }
 
     fun getFavoriteUsers() {
         viewModelScope.launch {
-            _favoriteUsersLiveData.postValue(mFavoriteUserRepository.getFavoriteUsers())
+            _favoriteUsersLiveData.value = favoriteUserRepository.getFavoriteUsers()
         }
     }
 
     fun toggleFavoriteUser() {
         viewModelScope.launch {
             responseLiveData.value?.let { user ->
-                if (user.isFavorite) mFavoriteUserRepository.delete(user)
-                else mFavoriteUserRepository.insert(user)
+                if (user.isFavorite) favoriteUserRepository.delete(user)
+                else favoriteUserRepository.insert(user)
 
                 user.isFavorite = !user.isFavorite
-                _responseLiveData.postValue(user)
+                _responseLiveData.value = user
             }
         }
     }

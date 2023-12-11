@@ -16,7 +16,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.zacky.fundamentalsubmission.R
 import com.zacky.fundamentalsubmission.databinding.ActivityMainBinding
-import com.zacky.fundamentalsubmission.model.GithubUser
 import com.zacky.fundamentalsubmission.ui.SettingPreferences
 import com.zacky.fundamentalsubmission.ui.adapter.UserAdapter
 import com.zacky.fundamentalsubmission.ui.dataStore
@@ -26,111 +25,120 @@ import com.zacky.fundamentalsubmission.ui.viewmodel.factory.MainViewModelFactory
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initializeViews()
+        initializeViewModel()
+        setupRecyclerView()
+        observeViewModel()
+        setupTopAppBar()
+        setupThemeSwitch()
+    }
 
+    private fun initializeViews() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         supportActionBar?.hide()
+    }
 
-        val switchTheme = findViewById<SwitchMaterial>(R.id.switch_theme)
-
+    private fun initializeViewModel() {
         val pref = SettingPreferences.getInstance(application.dataStore)
-        val mainViewModel =
+        mainViewModel =
             ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
+    }
+
+    private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(this)
         binding.rvListUser.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
         binding.rvListUser.addItemDecoration(itemDecoration)
+        binding.rvListUser.adapter = UserAdapter()
+    }
 
-        val adapter = UserAdapter()
-        binding.rvListUser.adapter = adapter
+    private fun observeViewModel() {
+        mainViewModel.apply {
+            userProfile.observe(this@MainActivity) { userProfile ->
+                (binding.rvListUser.adapter as? UserAdapter)?.submitList(userProfile)
+            }
 
-        mainViewModel.userProfile.observe(this) { userProfile ->
-            setUserData(userProfile)
-        }
+            isLoading.observe(this@MainActivity) {
+                showLoading(it)
+            }
 
-        mainViewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
+            snackbarText.observe(this@MainActivity) {
+                it.getContentIfNotHandled()?.let { snackBarText ->
+                    Snackbar.make(window.decorView.rootView, snackBarText, Snackbar.LENGTH_SHORT)
+                        .show()
+                }
+            }
 
-        mainViewModel.snackbarText.observe(this) {
-            it.getContentIfNotHandled()?.let { snackBarText ->
-                Snackbar.make(window.decorView.rootView, snackBarText, Snackbar.LENGTH_SHORT).show()
+            getThemeSettings().observe(this@MainActivity) { isDarkModeActive: Boolean ->
+                applyTheme(isDarkModeActive)
             }
         }
+    }
 
-
-
+    private fun setupTopAppBar() {
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.search -> {
-                    val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
-                    val searchItem: MenuItem = menuItem
-                    val searchView = searchItem.actionView as SearchView
-
-                    searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-                    searchView.queryHint = resources.getString(R.string.search_hint)
-
-                    searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-                        override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-                            return true
-                        }
-
-
-                        override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                            mainViewModel.findGithubUser(login = "")
-                            return true
-                        }
-
-                    })
-
-                    searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                        override fun onQueryTextSubmit(query: String?): Boolean {
-                            mainViewModel.findGithubUser(query.toString())
-                            searchView.clearFocus()
-                            return true
-                        }
-
-                        override fun onQueryTextChange(newText: String?): Boolean {
-                            return false
-                        }
-
-                    })
-                    return@setOnMenuItemClickListener true
-                }
-
+                R.id.search -> handleSearchMenuClick(menuItem)
                 R.id.favorite -> {
-                    val intent = Intent(this, FavoriteActivity::class.java)
-                    startActivity(intent)
+                    startActivity(Intent(this, FavoriteActivity::class.java))
                     true
                 }
 
                 else -> false
             }
         }
+    }
 
+    private fun handleSearchMenuClick(menuItem: MenuItem): Boolean {
+        val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
+        val searchItem: MenuItem = menuItem
+        val searchView = searchItem.actionView as SearchView
 
-        mainViewModel.getThemeSettings().observe(this) { isDarkModeActive: Boolean ->
-            if (isDarkModeActive) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                switchTheme.isChecked = true
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                switchTheme.isChecked = false
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.queryHint = resources.getString(R.string.search_hint)
+
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                return true
             }
-        }
+
+            override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                mainViewModel.findGithubUser(login = "")
+                return true
+            }
+        })
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                mainViewModel.findGithubUser(query.toString())
+                searchView.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+        return true
+    }
+
+    private fun setupThemeSwitch() {
+        val switchTheme = findViewById<SwitchMaterial>(R.id.switch_theme)
         switchTheme.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             mainViewModel.saveThemeSetting(isChecked)
         }
     }
 
-    private fun setUserData(dataUser: List<GithubUser>) {
-        val adapter = UserAdapter()
-        adapter.submitList(dataUser)
-        binding.rvListUser.adapter = adapter
+    private fun applyTheme(isDarkModeActive: Boolean) {
+        val mode =
+            if (isDarkModeActive) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        AppCompatDelegate.setDefaultNightMode(mode)
+        findViewById<SwitchMaterial>(R.id.switch_theme).isChecked = isDarkModeActive
     }
 
     private fun showLoading(isLoading: Boolean) {

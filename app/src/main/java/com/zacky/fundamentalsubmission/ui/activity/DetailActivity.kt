@@ -34,29 +34,38 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setupViews()
+        setupViewModel()
+        setupObservers()
 
         val username = intent.getStringExtra(LOGIN_NAME)
         if (username != null) {
-            findDetailUser(username)
+            fetchUserDetails(username)
         }
+    }
+
+    private fun setupViews() {
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this)
+        val username = intent.getStringExtra(LOGIN_NAME)
         if (username != null) {
             sectionsPagerAdapter.username = username
         }
 
         val viewPager: ViewPager2 = binding.viewPager
         viewPager.adapter = sectionsPagerAdapter
-        val tabs: TabLayout = binding.tabFoll
 
+        val tabs: TabLayout = binding.tabFoll
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
 
         supportActionBar?.elevation = 0f
+    }
+
+    private fun setupViewModel() {
         val db = Room.databaseBuilder(
             applicationContext, FavoriteUserRoomDatabase::class.java, "favorite_user_db"
         ).build()
@@ -69,41 +78,17 @@ class DetailActivity : AppCompatActivity() {
         binding.btnFavorite.setOnClickListener {
             viewModel.toggleFavoriteUser()
         }
+    }
 
+    private fun setupObservers() {
         viewModel.responseLiveData.observe(this) { user ->
-            if (user.isFavorite) {
-                val color = ContextCompat.getColor(
-                    this@DetailActivity, R.color.red
-                )
-                binding.btnFavorite.imageTintList = ColorStateList.valueOf(color)
-            } else {
-                val color = ContextCompat.getColor(
-                    this@DetailActivity, R.color.black
-                )
-                binding.btnFavorite.imageTintList = ColorStateList.valueOf(color)
-            }
+            val colorRes = if (user.isFavorite) R.color.red else R.color.black
+            val color = ContextCompat.getColor(this@DetailActivity, colorRes)
+            binding.btnFavorite.imageTintList = ColorStateList.valueOf(color)
         }
     }
 
-    private fun setReviewData(response: DetailUserResponse) {
-        binding.detailUserName.text = response.name
-        Glide.with(this@DetailActivity).load(response.avatarUrl).circleCrop()
-            .into(binding.imgDetailUser)
-
-        binding.detailName.text = response.login
-
-        val followersCount = response.followers
-        val followingCount = response.following
-
-        binding.tvFollower.text = resources.getString(R.string.followers, followersCount)
-        binding.tvFollowing.text = resources.getString(R.string.following, followingCount)
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
-    private fun findDetailUser(username: String) {
+    private fun fetchUserDetails(username: String) {
         showLoading(true)
 
         val client = ApiConfig.getApiService().getDetailUser(username)
@@ -113,10 +98,7 @@ class DetailActivity : AppCompatActivity() {
             ) {
                 showLoading(false)
                 if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        setReviewData(responseBody)
-                    }
+                    response.body()?.let { setUserData(it) }
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
@@ -127,6 +109,26 @@ class DetailActivity : AppCompatActivity() {
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
         })
+    }
+
+    private fun setUserData(response: DetailUserResponse) {
+        binding.apply {
+            detailUserName.text = response.name
+            Glide.with(this@DetailActivity).load(response.avatarUrl).circleCrop()
+                .into(imgDetailUser)
+
+            detailName.text = response.login
+
+            val followersCount = response.followers
+            val followingCount = response.following
+
+            tvFollower.text = resources.getString(R.string.followers, followersCount)
+            tvFollowing.text = resources.getString(R.string.following, followingCount)
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     companion object {
