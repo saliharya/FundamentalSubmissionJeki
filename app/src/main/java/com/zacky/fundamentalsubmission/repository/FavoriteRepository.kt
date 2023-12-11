@@ -14,4 +14,17 @@ class FavoriteRepository(private val mFavoriteUserDao: FavoriteUserDao) {
     suspend fun delete(githubUser: FavoriteUser) {
         mFavoriteUserDao.deleteFavoriteUser(githubUser)
     }
+
+    companion object {
+        @Volatile
+        private var INSTANCE: FavoriteRepository? = null
+
+        fun getInstance(favoriteUserDao: FavoriteUserDao): FavoriteRepository {
+            return INSTANCE ?: synchronized(this) {
+                val instance = INSTANCE ?: FavoriteRepository(favoriteUserDao)
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
 }

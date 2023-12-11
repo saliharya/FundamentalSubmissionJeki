@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.zacky.fundamentalsubmission.model.ItemsItem
+import com.zacky.fundamentalsubmission.model.GithubUser
 import com.zacky.fundamentalsubmission.remote.response.GithubResponse
 import com.zacky.fundamentalsubmission.remote.retrofit.ApiConfig
 import com.zacky.fundamentalsubmission.ui.SettingPreferences
@@ -18,8 +18,8 @@ import retrofit2.Response
 
 class MainViewModel(private val pref: SettingPreferences) : ViewModel() {
 
-    private val _userProfile = MutableLiveData<List<ItemsItem>>()
-    val userProfile: LiveData<List<ItemsItem>> = _userProfile
+    private val _userProfile = MutableLiveData<List<GithubUser>>()
+    val userProfile: LiveData<List<GithubUser>> = _userProfile
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -36,9 +36,9 @@ class MainViewModel(private val pref: SettingPreferences) : ViewModel() {
         findGithubUser(LOGIN)
     }
 
-    fun findGithubUser(LOGIN: String) {
+    fun findGithubUser(login: String) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getGithubUser(LOGIN)
+        val client = ApiConfig.getApiService().getGithubUser(login)
         client.enqueue(object : Callback<GithubResponse> {
             override fun onResponse(
                 call: Call<GithubResponse>, response: Response<GithubResponse>

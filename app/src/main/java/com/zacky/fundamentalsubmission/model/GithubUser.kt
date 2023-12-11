@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 
-data class ItemsItem(
+data class GithubUser(
 
     @field:SerializedName("gists_url") val gistsUrl: String,
 

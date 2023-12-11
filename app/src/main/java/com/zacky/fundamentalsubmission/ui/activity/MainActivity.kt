@@ -16,12 +16,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.zacky.fundamentalsubmission.R
 import com.zacky.fundamentalsubmission.databinding.ActivityMainBinding
-import com.zacky.fundamentalsubmission.model.ItemsItem
+import com.zacky.fundamentalsubmission.model.GithubUser
 import com.zacky.fundamentalsubmission.ui.SettingPreferences
 import com.zacky.fundamentalsubmission.ui.adapter.UserAdapter
 import com.zacky.fundamentalsubmission.ui.dataStore
 import com.zacky.fundamentalsubmission.ui.viewmodel.MainViewModel
-import com.zacky.fundamentalsubmission.ui.viewmodel.ViewModelFactory
+import com.zacky.fundamentalsubmission.ui.viewmodel.factory.MainViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         val pref = SettingPreferences.getInstance(application.dataStore)
         val mainViewModel =
-            ViewModelProvider(this, ViewModelFactory(pref))[MainViewModel::class.java]
+            ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
         val layoutManager = LinearLayoutManager(this)
         binding.rvListUser.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
 
                         override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                            mainViewModel.findGithubUser(LOGIN = "")
+                            mainViewModel.findGithubUser(login = "")
                             return true
                         }
 
@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUserData(dataUser: List<ItemsItem>) {
+    private fun setUserData(dataUser: List<GithubUser>) {
         val adapter = UserAdapter()
         adapter.submitList(dataUser)
         binding.rvListUser.adapter = adapter

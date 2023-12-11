@@ -15,5 +15,6 @@ data class FavoriteUser(
 
     @ColumnInfo(name = "username") var username: String? = null,
 
-    @ColumnInfo(name = "type") var type: String? = null
-) : Parcelable
+    @ColumnInfo(name = "type") var type: String? = null,
+    @ColumnInfo(name = "isFavorite") var isFavorite: Boolean = false
+) : Parcelable {}

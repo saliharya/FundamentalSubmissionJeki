@@ -7,13 +7,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.zacky.fundamentalsubmission.model.ItemsItem
 import com.zacky.fundamentalsubmission.databinding.ItemUserBinding
+import com.zacky.fundamentalsubmission.model.GithubUser
 import com.zacky.fundamentalsubmission.ui.activity.DetailActivity
 
-class UserAdapter : ListAdapter<ItemsItem, UserAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class UserAdapter : ListAdapter<GithubUser, UserAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): MyViewHolder {
         val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
     }
@@ -25,7 +28,7 @@ class UserAdapter : ListAdapter<ItemsItem, UserAdapter.MyViewHolder>(DIFF_CALLBA
 
     class MyViewHolder(private val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(userProfile: ItemsItem) {
+        fun bind(userProfile: GithubUser) {
             binding.tvItemName.text = userProfile.login
             Glide.with(itemView).load(userProfile.avatarUrl).circleCrop().into(binding.imgItemPhoto)
 
@@ -38,12 +41,12 @@ class UserAdapter : ListAdapter<ItemsItem, UserAdapter.MyViewHolder>(DIFF_CALLBA
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ItemsItem>() {
-            override fun areItemsTheSame(oldItem: ItemsItem, newItem: ItemsItem): Boolean {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<GithubUser>() {
+            override fun areItemsTheSame(oldItem: GithubUser, newItem: GithubUser): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: ItemsItem, newItem: ItemsItem): Boolean {
+            override fun areContentsTheSame(oldItem: GithubUser, newItem: GithubUser): Boolean {
                 return oldItem == newItem
             }
         }

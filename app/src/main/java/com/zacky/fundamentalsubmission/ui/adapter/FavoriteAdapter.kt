@@ -1,19 +1,17 @@
 package com.zacky.fundamentalsubmission.ui.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.zacky.fundamentalsubmission.model.FavoriteUser
 import com.zacky.fundamentalsubmission.databinding.ItemUserBinding
-import com.zacky.fundamentalsubmission.ui.activity.DetailActivity
+import com.zacky.fundamentalsubmission.model.FavoriteUser
 
-class FavoriteAdapter(private val context: Context) :
-    ListAdapter<FavoriteUser, FavoriteAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class FavoriteAdapter(private val onItemClick: (FavoriteUser) -> Unit
+) : ListAdapter<FavoriteUser, FavoriteAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -27,20 +25,20 @@ class FavoriteAdapter(private val context: Context) :
 
     inner class MyViewHolder(private val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(favoriteUser: FavoriteUser) {
             binding.tvItemName.text = favoriteUser.username
-            Glide.with(itemView).load(favoriteUser.imgUrl).circleCrop().into(binding.imgItemPhoto)
+            Glide.with(binding.root).load(favoriteUser.imgUrl).circleCrop()
+                .into(binding.imgItemPhoto)
 
             itemView.setOnClickListener {
-                val intent = Intent(itemView.context, DetailActivity::class.java)
-                intent.putExtra("dataUser", favoriteUser.username)
-                itemView.context.startActivity(intent)
+                onItemClick.invoke(favoriteUser)
             }
         }
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FavoriteUser>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FavoriteUser>() {
             override fun areItemsTheSame(oldItem: FavoriteUser, newItem: FavoriteUser): Boolean {
                 return oldItem.id == newItem.id
             }

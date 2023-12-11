@@ -9,7 +9,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zacky.fundamentalsubmission.R
-import com.zacky.fundamentalsubmission.model.ItemsItem
+import com.zacky.fundamentalsubmission.model.GithubUser
 import com.zacky.fundamentalsubmission.remote.retrofit.ApiConfig
 import com.zacky.fundamentalsubmission.databinding.FragmentFollBinding
 import com.zacky.fundamentalsubmission.ui.activity.DetailActivity
@@ -64,7 +64,7 @@ class FollowFragment : Fragment() {
     }
 
 
-    private fun setReviewData(listGithub: List<ItemsItem>) {
+    private fun setReviewData(listGithub: List<GithubUser>) {
         val adapter = UserAdapter()
         adapter.submitList(listGithub)
         binding.rvFoll.adapter = adapter
@@ -78,9 +78,9 @@ class FollowFragment : Fragment() {
     private fun getFollower(USERNAME: String) {
         showLoading(true)
         val client = ApiConfig.getApiService().getFollowers(USERNAME)
-        client.enqueue(object : Callback<List<ItemsItem>> {
+        client.enqueue(object : Callback<List<GithubUser>> {
             override fun onResponse(
-                call: Call<List<ItemsItem>>, response: Response<List<ItemsItem>>
+                call: Call<List<GithubUser>>, response: Response<List<GithubUser>>
             ) {
                 showLoading(false)
                 if (response.isSuccessful) {
@@ -93,7 +93,7 @@ class FollowFragment : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<List<ItemsItem>>, t: Throwable) {
+            override fun onFailure(call: Call<List<GithubUser>>, t: Throwable) {
                 showLoading(false)
                 Log.e(DetailActivity.TAG, "onFailure: ${t.message.toString()}")
             }
@@ -103,9 +103,9 @@ class FollowFragment : Fragment() {
     private fun getFollowing(USERNAME: String) {
         showLoading(true)
         val client = ApiConfig.getApiService().getFollowing(USERNAME)
-        client.enqueue(object : Callback<List<ItemsItem>> {
+        client.enqueue(object : Callback<List<GithubUser>> {
             override fun onResponse(
-                call: Call<List<ItemsItem>>, response: Response<List<ItemsItem>>
+                call: Call<List<GithubUser>>, response: Response<List<GithubUser>>
             ) {
                 showLoading(false)
                 if (response.isSuccessful) {
@@ -118,7 +118,7 @@ class FollowFragment : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<List<ItemsItem>>, t: Throwable) {
+            override fun onFailure(call: Call<List<GithubUser>>, t: Throwable) {
                 showLoading(false)
                 Log.e(DetailActivity.TAG, "onFailure: ${t.message.toString()}")
             }
