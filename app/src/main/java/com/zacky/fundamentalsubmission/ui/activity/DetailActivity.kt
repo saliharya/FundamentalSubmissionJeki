@@ -8,7 +8,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
@@ -22,6 +22,7 @@ import com.zacky.fundamentalsubmission.repository.FavoriteRepository
 import com.zacky.fundamentalsubmission.ui.adapter.SectionsPagerAdapter
 import com.zacky.fundamentalsubmission.ui.viewmodel.DetailViewModel
 import com.zacky.fundamentalsubmission.ui.viewmodel.factory.DetailViewModelFactory
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,7 +31,6 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private lateinit var viewModel: DetailViewModel
-    private lateinit var favoriteRepository: FavoriteRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,15 +70,12 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        val db = Room.databaseBuilder(
-            applicationContext, FavoriteUserRoomDatabase::class.java, "favorite_user_db"
-        ).build()
+        val favoriteUserDao = FavoriteUserRoomDatabase.getInstance(this).favoriteUserDao()
 
-        val favoriteUserDao = db.favoriteUserDao()
-        favoriteRepository = FavoriteRepository.getInstance(favoriteUserDao)
         viewModel = ViewModelProvider(
-            this, DetailViewModelFactory(favoriteRepository)
+            this, DetailViewModelFactory(FavoriteRepository.getInstance(favoriteUserDao))
         )[DetailViewModel::class.java]
+
         binding.btnFavorite.setOnClickListener {
             viewModel.toggleFavoriteUser()
         }
@@ -102,7 +99,12 @@ class DetailActivity : AppCompatActivity() {
             ) {
                 showLoading(false)
                 if (response.isSuccessful) {
-                    response.body()?.let { setUserData(it) }
+                    response.body()?.let { user ->
+                        lifecycleScope.launch {
+                            viewModel.checkIfFavorite(user)
+                            setUserData(user)
+                        }
+                    }
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }

@@ -6,7 +6,6 @@ import com.zacky.fundamentalsubmission.model.GithubUser
 class FavoriteRepository(private val mFavoriteUserDao: FavoriteUserDao) {
 
     suspend fun getFavoriteUsers(): List<GithubUser> = mFavoriteUserDao.getFavoriteUsers()
-
     suspend fun insert(githubUser: GithubUser) {
         mFavoriteUserDao.insertFavoriteUser(githubUser)
     }

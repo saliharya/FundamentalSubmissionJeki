@@ -1,6 +1,7 @@
 package com.zacky.fundamentalsubmission.ui.activity
 
 import android.app.SearchManager
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -15,8 +16,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.zacky.fundamentalsubmission.R
 import com.zacky.fundamentalsubmission.databinding.ActivityMainBinding
-import com.zacky.fundamentalsubmission.ui.other.SettingPreferences
 import com.zacky.fundamentalsubmission.ui.adapter.UserAdapter
+import com.zacky.fundamentalsubmission.ui.other.SettingPreferences
 import com.zacky.fundamentalsubmission.ui.other.dataStore
 import com.zacky.fundamentalsubmission.ui.viewmodel.MainViewModel
 import com.zacky.fundamentalsubmission.ui.viewmodel.factory.MainViewModelFactory
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.search -> handleSearchMenuClick(menuItem)
                 R.id.favorite -> {
-//                    startActivity(Intent(this, FavoriteActivity::class.java))
+                    startActivity(Intent(this, FavoriteActivity::class.java))
                     true
                 }
 

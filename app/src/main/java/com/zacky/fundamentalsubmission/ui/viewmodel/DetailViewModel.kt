@@ -15,14 +15,20 @@ class DetailViewModel(private val favoriteUserRepository: FavoriteRepository) : 
     fun toggleFavoriteUser() {
         viewModelScope.launch {
             responseLiveData.value?.let { user ->
-                if (user.isFavorite)
-                    favoriteUserRepository.delete(user)
-                else
-                    favoriteUserRepository.insert(user)
+                if (user.isFavorite) favoriteUserRepository.delete(user)
+                else favoriteUserRepository.insert(user)
 
                 user.isFavorite = !user.isFavorite
                 _responseLiveData.value = user
             }
         }
+    }
+
+
+    suspend fun checkIfFavorite(user: GithubUser) {
+        val favoriteUsers = favoriteUserRepository.getFavoriteUsers()
+        val isFavorite = favoriteUsers.any { it.id == user.id }
+        user.isFavorite = isFavorite
+        _responseLiveData.value = user
     }
 }
