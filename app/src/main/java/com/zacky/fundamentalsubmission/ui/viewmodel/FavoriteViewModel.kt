@@ -16,10 +16,18 @@ class FavoriteViewModel(private val favoriteRepository: FavoriteRepository) : Vi
         fetchFavoriteUsers()
     }
 
-    private fun fetchFavoriteUsers() {
+     fun fetchFavoriteUsers() {
         viewModelScope.launch {
             val users = favoriteRepository.getFavoriteUsers()
-            _favoriteUsers.postValue(users)
+            _favoriteUsers.value = users
+        }
+    }
+
+    fun deleteUserFromFavorites(user: GithubUser) {
+        viewModelScope.launch {
+            favoriteRepository.delete(user)
+            fetchFavoriteUsers()
         }
     }
 }
+
